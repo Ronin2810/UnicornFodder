@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/startupreg.css">
+    <title>Startup Registration</title>
+</head>
+<body>
+    <div class="main">
+
+        <form action="/startuplog" method="post">
+            <label for="name">Startup Name:</label>
+            <input type="text" id="name" name="name" required>
+          
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+          
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirmpassword" required>
+          
+            <label for="industry">Industry:</label>
+            <select id="industry" name="industry">
+              <option value="Technology">Technology</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Finance">Finance</option>
+              <option value="Energy">Energy</option>
+            </select>
+          
+            <label for="stage">Stage of Development:</label>
+            <select id="stage" name="stage">
+              <option value="Ideation">Ideation</option>
+              <option value="Prototype">Prototype</option>
+              <option value="Launch">Launch</option>
+              <option value="Growth">Growth</option>
+            </select>
+          
+            <label for="funding">Funding Amount:</label>
+            <select id="funding" name="funding">
+              <option value="10000">$10,000</option>
+              <option value="50000">$50,000</option>
+              <option value="100000">$100,000</option>
+              <option value="500000">$500,000</option>
+            </select>
+          
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location">
+          
+            <label for="pitch">Pitch:</label>
+            <textarea id="pitch" name="pitch"></textarea>
+          
+            <label for="linkedin">LinkedIn Profile:</label>
+            <input type="text" id="linkedin" name="linkedin">
+          
+            <label for="website">Website:</label>
+            <input type="url" id="website" name="website">
+          
+            <label for="team-size">Team Size:</label>
+            <select id="team-size" name="teamsize">
+              <option value="1-5">1-5</option>
+              <option value="6-10">6-10</option>
+              <option value="11-20">11-20</option>
+              <option value="20+">20+</option>
+            </select>
+          
+            <input type="submit" value="Register">
+            <input type="reset" value="Reset">
+          </form>
+    </div>
+      
+</body>
+</html>

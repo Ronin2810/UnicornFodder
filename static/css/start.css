@@ -1,0 +1,32 @@
+body {
+    background-color: #cdc5c5;
+  }
+h2{
+  text-align: center;
+}
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+  }
+  
+  .investor,
+  .startup {
+    margin: 0 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .investor:hover,
+  .startup:hover {
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+  }
+  

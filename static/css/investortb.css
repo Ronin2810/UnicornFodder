@@ -1,0 +1,10 @@
+/* normalize image size */
+.navbar-img {
+    margin-left: 50px;
+    height: 35px;
+    width: 35px;
+  }
+  
+.nav-link-logout{
+  margin-left: 1030px;
+}

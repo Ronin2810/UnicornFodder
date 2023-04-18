@@ -1,0 +1,87 @@
+/* container for the form */
+.main {
+    width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: #f1f1f1;
+  }
+  
+  /* style for the form labels */
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* style for the form inputs */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #e0e0e0;
+    color: #333;
+  }
+  
+  /* style for the submit button */
+  input[type="submit"],
+  input[type="reset"] {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  /* style for the reset button */
+  input[type="reset"] {
+    background-color: #f44336;
+  }
+  
+  /* style for the radio buttons */
+  input[type="radio"] {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  /* style for the select elements */
+  select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #e0e0e0;
+    color: #333;
+  }
+  
+  /* style for the container headings */
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* style for the error messages */
+  .error {
+    color: #f44336;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/investorreg.css">
+    <title>Investor Registration</title>
+</head>
+<body>
+    <div class="main">
+
+        <form action="/investorlog" method="post">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+          
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+          
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirmpassword" required>
+          
+            <label for="invest-type">Investment Type:</label>
+            <select id="invest-type" name="investtype">
+              <option value="Angel Investment">Angel Investment</option>
+              <option value="Venture Capital">Venture Capital</option>
+              <option value="Private Equity">Private Equity</option>
+            </select>
+          
+            <label for="industry">Industry Preference:</label>
+            <select id="industry" name="industry">
+              <option value="Technology">Technology</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Finance">Finance</option>
+              <option value="Energy">Energy</option>
+            </select>
+          
+            <label for="stage">Stage of Development:</label>
+            <select id="stage" name="stage">
+              <option value="Seed Stage">Seed Stage</option>
+              <option value="Early Stage">Early Stage</option>
+              <option value="Growth Stage">Growth Stage</option>
+              <option value="Mature Stage">Mature Stage</option>
+            </select>
+          
+            <label for="min-investment">Minimum Investment Amount:</label>
+            <select id="min-investment" name="mininvestment">
+              <option value="10000">$10,000</option>
+              <option value="50000">$50,000</option>
+              <option value="100000">$100,000</option>
+              <option value="500000">$500,000</option>
+            </select>
+          
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone">
+          
+            <label for="linkedin">LinkedIn Profile:</label>
+            <input type="text" id="linkedin" name="linkedin">
+          
+            <label for="accredited">Accredited Investor:</label>
+            <div>
+              <input type="radio" id="yes" name="accredited" value="yes">
+              <label for="yes">Yes</label>
+          
+              <input type="radio" id="no" name="accredited" value="no">
+              <label for="no">No</label>
+            </div>
+          
+            <label for="conflicts">Disclosure of Conflicts of Interest:</label>
+            <textarea id="conflicts" name="conflicts"></textarea>
+          
+            <input type="submit" value="Register">
+            <input type="reset" value="Reset">
+          </form>
+    </div>
+      
+</body>
+</html>

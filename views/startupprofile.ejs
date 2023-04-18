@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/startupprofile.css">
+    <title>Startup Profile</title>
+</head>
+<body>
+    <div class="main">
+        <h1>Startup Profile</h1>
+        <hr>
+        <h2>Basic Information</h2>
+        <p><strong>Startup Name:</strong><%=name%></p>
+        <p><strong>Email:</strong><%=email%></p>
+        <p><strong>Industry:</strong> <%=ip%></p>
+        <p><strong>Stage of Development:</strong> <%=sod%></p>
+        <p><strong>Location:</strong> <%=loc%></p>
+        <p><strong>Team Size:</strong> <%=ts%></p>
+        <hr>
+        <h2>Funding Information</h2>
+        <p><strong>Funding Amount:</strong> $ <%=mia%></p>
+        <hr>
+        <h2>About Us</h2>
+        <p><%=ptc%></p>
+        <hr>
+        <h2>Links</h2>
+        <p><strong>LinkedIn Profile:</strong> <a href="<%=lin%>" target="_blank"><%=lin%></a></p>
+        <p><strong>Website:</strong> <a href="<%=web%>" target="_blank"><%=web%></a></p>
+        <hr>
+        <a href="/updateprofilestartup">Update Profile</a>
+    </div>
+</body>
+</html>
