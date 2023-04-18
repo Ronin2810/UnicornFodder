@@ -66,10 +66,27 @@ startup_router.get('/home',authenticate,(req,res)=>{
     res.render('home',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/startuptb',authenticate,(req,res)=>{
-    res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type})
+    const query = 'select ID,Name from startup;'
+    db_sql.query(query,(err,result)=>{
+        if (err) {
+            return console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)));
+        res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type,data:result})
+    })
+
+    // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/investortb',authenticate,(req,res)=>{
-    res.render('investortb',{profile:req.session.user.name,type:req.session.user.type})
+    const query = 'select ID,Name from investor;'
+    db_sql.query(query,(err,result)=>{
+        if (err) {
+            return console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)));
+        res.render('investortb',{profile:req.session.user.name,type:req.session.user.type,data:result})
+    })
+    // res.render('investortb',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/profile2',authenticate,(req,res)=>{
     // console.log("inside startup router for profile");
@@ -107,4 +124,83 @@ startup_router.get('/profile2',authenticate,(req,res)=>{
     })
 })
 
+startup_router.get('/getprofile/investor', authenticate, (req, res) => {
+    const id = req.query.ID;
+    const query = "select * from investor where ID=" + id + ";"
+    db_sql.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)));
+        const name = result[0].Name;
+        const email = result[0].Email;
+        const it = result[0].Investment_Type;
+        const ip = result[0].Industry;
+        const sod = result[0].Stage;
+        const mia = result[0].Amount;
+        const pno = result[0].phone;
+        const lin = result[0].LinkedIn;
+        const acc = result[0].Accredited;
+        let acc1 = "";
+        if (acc) {
+            acc1 = "Yes";
+        }
+        else {
+            acc1 = "No";
+        }
+        const con = result[0].Disclosure;
+        res.render('profinvestor', {
+            profile: req.session.user.name,
+            name: name,
+            email: email,
+            it: it,
+            ip: ip,
+            sod: sod,
+            mia: mia,
+            pno: pno,
+            lin: lin,
+            acc: acc1,
+            con: con,
+            type: req.session.user.type
+        })
+
+    })
+})
+
+startup_router.get('/getprofile/startup', authenticate, (req, res) => {
+    const id = req.query.ID;
+    const query = 'select * from startup where ID=' + id + ';'
+    db_sql.query(query, (err, result) => {
+        if (err) {
+            return console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)));
+        const name = result[0].Name;
+        const email = result[0].Email;
+        const ip = result[0].Industry;
+        const sod = result[0].Stage;
+        const loc = result[0].Location;
+        const ts = result[0].TeamSize;
+        const mia = result[0].Amount;
+        const ptc = result[0].Pitch;
+        const lin = result[0].LinkedIn;
+        const web = result[0].Website;
+
+        res.render('profstartup', {
+            profile: req.session.user.name,
+            name: name,
+            email: email,
+            ip: ip,
+            sod: sod,
+            loc: loc,
+            ptc: ptc,
+            ts: ts,
+            mia: mia,
+            lin: lin,
+            web: web,
+            type: req.session.user.type
+        })
+        // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type,data:result})
+    })
+})
 module.exports = startup_router;

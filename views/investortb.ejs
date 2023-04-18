@@ -28,6 +28,24 @@
           </div>
         </div>
       </nav>
-    Investors from SQL here
-</body>
+      <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(function(row) { %>
+            <tr>
+                <td><%= row.ID %></td>
+                <td><%= row.Name %></td>
+                <!-- <td><a href="/getprofile/investor/:<%=row.ID%>">View Profile</a></td> -->
+                <td><a href="/getprofile/investor?ID=<%=row.ID%>">View Profile</a></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    </body>
 </html>
