@@ -66,10 +66,11 @@ investor_router.post('/home',(req,res)=>{
             req.session.user = {
                 name: result[0].Name,
                 email: result[0].Email,
+                type:1
             } ;// user is fetched from DB and stored in this variable
             req.session.isAuth=true;
             req.session.save();
-            res.render('home',{profile:req.session.user.name})
+            res.render('home',{profile:req.session.user.name,type:req.session.user.type})
         }
         else{
             res.redirect('/investorlog');
@@ -79,23 +80,23 @@ investor_router.post('/home',(req,res)=>{
 
 // Home Page after previous logged in 
 investor_router.get('/home',authenticate,(req,res)=>{
-    res.render('home',{profile:req.session.user.name})
+    res.render('home',{profile:req.session.user.name,type:req.session.user.type})
 })
 
 // Startup table
 investor_router.get('/startuptb',authenticate,(req,res)=>{
     // fetch data from startup table and display....make sure to display exxcept its own entry
-    res.render('startuptb',{profile:req.session.user.name})
+    res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type})
 })
 
 // Investor table
 investor_router.get('/investortb',authenticate,(req,res)=>{
     // fetch data from investor table and display....make sure to display exxcept its own entry
-    res.render('investortb',{profile:req.session.user.name})
+    res.render('investortb',{profile:req.session.user.name,type:req.session.user.type})
 })
 
-investor_router.get('/profile',authenticate,(req,res)=>{
-    console.log("inside investor router for profile");
+investor_router.get('/profile1',authenticate,(req,res)=>{
+    // console.log("inside investor router for profile");
     const q = "select * from investor where Email='"+req.session.user.email+"';"
     db_sql.query(q,(err,result)=>{
         if(err){
@@ -131,6 +132,7 @@ investor_router.get('/profile',authenticate,(req,res)=>{
             lin:lin,
             acc:acc1,
             con:con,
+            type:req.session.user.type
         })
     })
     

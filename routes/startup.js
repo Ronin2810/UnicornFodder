@@ -48,10 +48,11 @@ startup_router.post('/home1',(req,res)=>{
             req.session.user = {
                 name: result[0].Name,
                 email: result[0].Email,
+                type:2
             } ;// user is fetched from DB and stored in this variable
             req.session.isAuth=true;
             req.session.save();
-            res.render('home',{profile:req.session.user.name})
+            res.render('home',{profile:req.session.user.name,type:req.session.user.type})
         }
         else{
             res.redirect('/startuplog');
@@ -62,16 +63,16 @@ startup_router.post('/home1',(req,res)=>{
 
 
 startup_router.get('/home',authenticate,(req,res)=>{
-    res.render('home',{profile:req.session.user.name})
+    res.render('home',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/startuptb',authenticate,(req,res)=>{
-    res.render('startuptb',{profile:req.session.user.name})
+    res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/investortb',authenticate,(req,res)=>{
-    res.render('investortb',{profile:req.session.user.name})
+    res.render('investortb',{profile:req.session.user.name,type:req.session.user.type})
 })
-startup_router.get('/profile',authenticate,(req,res)=>{
-    console.log("inside startup router for profile");
+startup_router.get('/profile2',authenticate,(req,res)=>{
+    // console.log("inside startup router for profile");
     const q = "select * from startup where Email='"+req.session.user.email+"';"
     db_sql.query(q,(err,result)=>{
         if(err){
@@ -100,7 +101,8 @@ startup_router.get('/profile',authenticate,(req,res)=>{
             ts:ts,
             mia:mia,
             lin:lin,
-            web:web
+            web:web,
+            type:req.session.user.type
         })
     })
 })
