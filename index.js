@@ -7,13 +7,17 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const investor_router = require('./routes/investor')
 const startup_router = require('./routes/startup')
+const path = require('path')
 require('dotenv').config()
 
 const app = express()
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use("/static",express.static("static"))
+// app.use("/static",express.static("static"))
+const static_path = path.join(__dirname,"static")
+app.use(express.static(static_path))
+
 app.use(express.static('data'))
 app.use(cookieParser())
 
