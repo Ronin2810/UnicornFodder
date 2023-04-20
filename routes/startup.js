@@ -41,12 +41,10 @@ startup_router.post("/startuplog",(req,res)=>{
         })
         console.log(user);
         rs = user.save()
-        // console.log(rs);
     })
 
 
     const query = "insert into startup values (NULL,'"+name+"','"+email+"','"+hash_new+"','"+industry+"','"+stage+"','"+funding+"','"+location+"','"+pitch+"','"+linkedin+"','"+website+"','"+teamsize+"');"
-    // console.log(query);
     db_sql.query(query,(err,result)=>{
         if (err) {
             return console.log(err);
@@ -100,7 +98,6 @@ startup_router.get('/startuptb',authenticate,(req,res)=>{
         res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type,data:result})
     })
 
-    // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/investortb',authenticate,(req,res)=>{
     const query = "select ID,Name from investor where Email not in ('"+req.session.user.email+"');"
@@ -111,10 +108,8 @@ startup_router.get('/investortb',authenticate,(req,res)=>{
         result = Object.values(JSON.parse(JSON.stringify(result)));
         res.render('investortb',{profile:req.session.user.name,type:req.session.user.type,data:result})
     })
-    // res.render('investortb',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/profile2',authenticate,(req,res)=>{
-    // console.log("inside startup router for profile");
     const q = "select * from startup where Email='"+req.session.user.email+"';"
     db_sql.query(q,(err,result)=>{
         if(err){
@@ -225,7 +220,6 @@ startup_router.get('/getprofile/startup', authenticate, (req, res) => {
             web: web,
             type: req.session.user.type
         })
-        // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type,data:result})
     })
 })
 
@@ -243,7 +237,8 @@ startup_router.get('/investor/follow',(req,res)=>{
         if (type===1) {
             // investor follows investor
             // append investor ID in i_following 
-            // append i_id in i_followers   
+            // append i_id in i_followers  
+            
         }
         else{
             // startup follows investor
