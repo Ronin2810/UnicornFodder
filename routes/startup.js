@@ -228,4 +228,59 @@ startup_router.get('/getprofile/startup', authenticate, (req, res) => {
         // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type,data:result})
     })
 })
+
+
+startup_router.get('/investor/follow',(req,res)=>{
+    const type = req.session.user.type;
+    const mail_profile = req.params;
+    const query = "select ID from investor where Email='"+mail_profile+"';"
+    db_sql.query(query,(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.id;
+        if (type===1) {
+            // investor follows investor
+            // append investor ID in i_following 
+            // append i_id in i_followers   
+        }
+        else{
+            // startup follows investor
+            // append investor ID in i_following 
+            // append s_id in s_followers  
+        }
+    })
+})
+
+startup_router.get('/startup/follow',(req,res)=>{
+    const type = req.session.user.type;
+    const mail_profile = req.params;
+    const query = "select ID from startup where Email='"+mail_profile+"';"
+    db_sql.query(query,(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.id;
+        if (type===1) {
+            // investor follows startup
+            //  append startup ID in s_following 
+            //  append i_id in i_followers   
+        }
+        else{
+            // startup follows startup
+            // append startup ID in s_following 
+            // append s_id in s_followers 
+        }
+    })
+})
+
+
+startup_router.get('/updateprofile/startup',(req,res)=>{
+    
+})
+
+
+
 module.exports = startup_router;

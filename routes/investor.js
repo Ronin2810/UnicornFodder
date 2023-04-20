@@ -201,6 +201,8 @@ investor_router.get('/getprofile/investor', authenticate, (req, res) => {
             acc1 = "No";
         }
         const con = result[0].Disclosure;
+
+        // if this profile's ID is present in our investor_follows db inside i_following set follow variable as "follow" else set as "unfollow"
         res.render('profinvestor', {
             profile: req.session.user.name,
             name: name,
@@ -213,7 +215,8 @@ investor_router.get('/getprofile/investor', authenticate, (req, res) => {
             lin: lin,
             acc: acc1,
             con: con,
-            type: req.session.user.type
+            type: req.session.user.type,
+            follow:"follow"
         })
 
     })
@@ -250,7 +253,9 @@ investor_router.get('/getprofile/startup', authenticate, (req, res) => {
             mia: mia,
             lin: lin,
             web: web,
-            type: req.session.user.type
+            type: req.session.user.type,
+            follow:"follow"
+
         })
         // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type,data:result})
     })
@@ -268,13 +273,13 @@ investor_router.get('/investor/follow',(req,res)=>{
         const id = result.id;
         if (type===1) {
             // investor follows investor
-            // check if i_id exists in investor_follow collection : if yes append investor ID in i_following else create
-            // check if investor ID exists in investor_follow collection : if yes append i_id in i_followers else create  
+            // append investor ID in i_following 
+            // append i_id in i_followers   
         }
         else{
             // startup follows investor
-            // check if s_id exists in startup_follow collection : if yes append investor ID in i_following else create
-            // check if investor ID exists in investor_follow collection : if yes append s_id in s_followers else create  
+            // append investor ID in i_following 
+            // append s_id in s_followers  
         }
     })
 })
@@ -291,16 +296,20 @@ investor_router.get('/startup/follow',(req,res)=>{
         const id = result.id;
         if (type===1) {
             // investor follows startup
-            // check if i_id exists in investor_follow collection : if yes append startup ID in s_following else create
-            // check if startup ID exists in startup_follow collection : if yes append i_id in i_followers else create  
+            // append startup ID in s_following 
+            // append i_id in i_followers   
         }
         else{
             // startup follows startup
-            // check if s_id exists in startup_follow collection : if yes append startup ID in s_following else create
-            // check if startup ID exists in startup_follow collection : if yes append s_id in s_followers else create  
+            //  append startup ID in s_following 
+            //  append s_id in s_followers 
         }
     })
 
+})
+
+investor_router.get('/updateprofile/investor',(req,res)=>{
+    
 })
 
 module.exports = investor_router;
