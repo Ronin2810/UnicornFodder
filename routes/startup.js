@@ -66,7 +66,7 @@ startup_router.get('/home',authenticate,(req,res)=>{
     res.render('home',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/startuptb',authenticate,(req,res)=>{
-    const query = 'select ID,Name from startup;'
+    const query = "select ID,Name from startup where Email not in ('"+req.session.user.email+"');"
     db_sql.query(query,(err,result)=>{
         if (err) {
             return console.log(err);
@@ -78,7 +78,7 @@ startup_router.get('/startuptb',authenticate,(req,res)=>{
     // res.render('startuptb',{profile:req.session.user.name,type:req.session.user.type})
 })
 startup_router.get('/investortb',authenticate,(req,res)=>{
-    const query = 'select ID,Name from investor;'
+    const query = "select ID,Name from investor where Email not in ('"+req.session.user.email+"');"
     db_sql.query(query,(err,result)=>{
         if (err) {
             return console.log(err);

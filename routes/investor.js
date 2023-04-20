@@ -86,7 +86,7 @@ investor_router.get('/home', authenticate, (req, res) => {
 // Startup table
 investor_router.get('/startuptb', authenticate, (req, res) => {
     // fetch data from startup table and display....make sure to display exxcept its own entry
-    const query = 'select ID,Name from startup;'
+    const query = "select ID,Name from startup where Email not in ('"+req.session.user.email+"');"
     db_sql.query(query, (err, result) => {
         if (err) {
             return console.log(err);
@@ -100,7 +100,7 @@ investor_router.get('/startuptb', authenticate, (req, res) => {
 // Investor table
 investor_router.get('/investortb', authenticate, (req, res) => {
     // fetch data from investor table and display....make sure to display exxcept its own entry
-    const query = 'select ID,Name from investor;'
+    const query = "select ID,Name from investor where Email not in ('"+req.session.user.email+"');"
     db_sql.query(query, (err, result) => {
         if (err) {
             return console.log(err);

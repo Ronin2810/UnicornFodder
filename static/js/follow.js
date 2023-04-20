@@ -2,10 +2,10 @@ const followbtn = document.getElementById('followbtn')
 
 followbtn.addEventListener('click',()=>{
     // console.log(followbtn);
-    if (followbtn.value==="Following") {
+    if (followbtn.value==="Unfollow") {
         followbtn.value= "Follow"
     }
     else{
-        followbtn.value= "Following"
+        followbtn.value= "Unfollow"
     }
 })
