@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const authenticate = require("../middleware/auth_investor");
 const investor_router = express.Router();
+const startup_schema = require('../models/startup_follow')
+const investor_schema = require('../models/investor_follow')
 
 //Starting page (Cookie destroy)
 investor_router.get("/", (req, res) => {
@@ -34,6 +36,23 @@ investor_router.post("/investorlog", (req, res) => {
     else {
         accr = 0
     }
+    const q = "select ID from investor order by ID DESC LIMIT 1;"
+    db_sql.query(q,(err,result)=>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.ID;
+        const user  = new investor_schema({
+            i_id: id+1,
+            i_followers:[],
+            i_following:[],
+            s_followers:[],
+            s_following:[]
+        })
+        const rs = user.save()
+    })
     const query = "insert into investor values (NULL,'" + name + "','" + email + "','" + hash_new + "','" + investtype + "','" + industry + "','" + stage + "','" + mininvestment + "','" + phone + "','" + linkedin + "'," + accr + ",'" + conflicts + "');"
     // console.log(query);
     db_sql.query(query, (err, result) => {
@@ -237,4 +256,69 @@ investor_router.get('/getprofile/startup', authenticate, (req, res) => {
     })
 })
 
+investor_router.get('/investor/follow',(req,res)=>{
+    const type = req.session.user.type;
+    const mail_profile = req.params;
+    const query = "select ID from investor where Email='"+mail_profile+"';"
+    db_sql.query(query,(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.id;
+        if (type===1) {
+            // investor follows investor
+            // check if i_id exists in investor_follow collection : if yes append investor ID in i_following else create
+            // check if investor ID exists in investor_follow collection : if yes append i_id in i_followers else create  
+        }
+        else{
+            // startup follows investor
+            // check if s_id exists in startup_follow collection : if yes append investor ID in i_following else create
+            // check if investor ID exists in investor_follow collection : if yes append s_id in s_followers else create  
+        }
+    })
+})
+
+investor_router.get('/startup/follow',(req,res)=>{
+    const type = req.session.user.type;
+    const mail_profile = req.params;
+    const query = "select ID from startup where Email='"+mail_profile+"';"
+    db_sql.query(query,(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.id;
+        if (type===1) {
+            // investor follows startup
+            // check if i_id exists in investor_follow collection : if yes append startup ID in s_following else create
+            // check if startup ID exists in startup_follow collection : if yes append i_id in i_followers else create  
+        }
+        else{
+            // startup follows startup
+            // check if s_id exists in startup_follow collection : if yes append startup ID in s_following else create
+            // check if startup ID exists in startup_follow collection : if yes append s_id in s_followers else create  
+        }
+    })
+
+})
+
 module.exports = investor_router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

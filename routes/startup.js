@@ -4,7 +4,10 @@ const db_sql = require('../dbconnect')
 const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const authenticate = require("../middleware/auth_startup");
+const { MongoError } = require("mongodb");
 const startup_router = express.Router();
+const startup_schema = require('../models/startup_follow')
+const investor_schema = require('../models/investor_follow')
 
 startup_router.get("/",(req,res)=>{
     req.session.destroy();
@@ -20,6 +23,28 @@ startup_router.post("/startuplog",(req,res)=>{
         return res.redirect('/startupreg')
     }
     let hash_new = bcrypt.hashSync(confirmpassword, 10);
+    
+    const q = "select ID from startup order by ID DESC LIMIT 1;"
+    db_sql.query(q,(err,result)=>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.ID;
+        const user  = new startup_schema({
+            s_id: id+1,
+            i_followers:[],
+            i_following:[],
+            s_followers:[],
+            s_following:[]
+        })
+        console.log(user);
+        rs = user.save()
+        // console.log(rs);
+    })
+
+
     const query = "insert into startup values (NULL,'"+name+"','"+email+"','"+hash_new+"','"+industry+"','"+stage+"','"+funding+"','"+location+"','"+pitch+"','"+linkedin+"','"+website+"','"+teamsize+"');"
     // console.log(query);
     db_sql.query(query,(err,result)=>{
