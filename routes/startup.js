@@ -227,46 +227,89 @@ startup_router.get('/getprofile/startup', authenticate, (req, res) => {
 startup_router.get('/investor/follow',(req,res)=>{
     const type = req.session.user.type;
     const mail_profile = req.params;
+    const mail_user = req.session.user.email;
+
     const query = "select ID from investor where Email='"+mail_profile+"';"
     db_sql.query(query,(err,result)=>{
         if(err){
             console.log(err);
         }
         result = Object.values(JSON.parse(JSON.stringify(result)))[0];
-        const id = result.id;
+        const id = result.ID;
         if (type===1) {
             // investor follows investor
             // append investor ID in i_following 
             // append i_id in i_followers  
-            
+            const query_user = "select ID from investor where Email='"+mail_user+"';"
+            db_sql.query(query_user,(err,result)=>{
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                investor_schema.updateOne({i_id:user_id},{$push:{i_following:id}})
+                investor_schema.updateOne({i_id:id},{$push:{i_followers:user_id}})
+            })
         }
         else{
             // startup follows investor
             // append investor ID in i_following 
             // append s_id in s_followers  
+            const query_user = "select ID from startup where Email='"+mail_user+"';"
+            db_sql.query(query_user,(err,result)=>{
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                startup_schema.updateOne({s_id:user_id},{$push:{i_following:id}})
+                investor_schema.updateOne({i_id:id},{$push:{s_followers:user_id}})
+            })
         }
     })
+
 })
 
 startup_router.get('/startup/follow',(req,res)=>{
     const type = req.session.user.type;
     const mail_profile = req.params;
+    const mail_user = req.session.user.email;
     const query = "select ID from startup where Email='"+mail_profile+"';"
     db_sql.query(query,(err,result)=>{
         if(err){
             console.log(err);
         }
         result = Object.values(JSON.parse(JSON.stringify(result)))[0];
-        const id = result.id;
+        const id = result.ID;
         if (type===1) {
             // investor follows startup
             //  append startup ID in s_following 
-            //  append i_id in i_followers   
+            //  append i_id in i_followers 
+            const query_user = "select ID from investor where Email='"+mail_user+"';"
+            db_sql.query(query_user,(err,result)=>{
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                investor_schema.updateOne({i_id:user_id},{$push:{s_following:id}})
+                startup_schema.updateOne({s_id:id},{$push:{i_followers:user_id}})
+            })  
         }
         else{
             // startup follows startup
             // append startup ID in s_following 
             // append s_id in s_followers 
+            const query_user = "select ID from startup where Email='"+mail_user+"';"
+            db_sql.query(query_user,(err,result)=>{
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                startup_schema.updateOne({s_id:user_id},{$push:{s_following:id}})
+                startup_schema.updateOne({s_id:id},{$push:{s_followers:user_id}})
+            })
         }
     })
 })
