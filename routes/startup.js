@@ -481,7 +481,7 @@ startup_router.get('/investor/follow', (req, res) => {
 
 })
 
-instartupouter.get('/startup/follow', (req, res) => {
+startup_router.get('/startup/follow', (req, res) => {
     const type = req.session.user.type;
     const mail_profile = req.query.mail;
     const mail_user = req.session.user.email;
@@ -558,7 +558,7 @@ instartupouter.get('/startup/follow', (req, res) => {
     })
 })
 
-instartupouter.get('/investor/unfollow',(req,res)=>{
+startup_router.get('/investor/unfollow',(req,res)=>{
     const type = req.session.user.type;
     const mail_profile = req.query.mail;
     const mail_user = req.session.user.email;
@@ -638,7 +638,7 @@ instartupouter.get('/investor/unfollow',(req,res)=>{
     })
 })
 
-instartupouter.get('/startup/unfollow',(req,res)=>{
+startup_router.get('/startup/unfollow',(req,res)=>{
     const type = req.session.user.type;
     const mail_profile = req.query.mail;
     const mail_user = req.session.user.email;
@@ -718,9 +718,50 @@ instartupouter.get('/startup/unfollow',(req,res)=>{
 
 
 startup_router.get('/updateprofile/startup',(req,res)=>{
-    
+    const email = req.session.user.email
+    db_sql.query(`select * from startup where Email='${email}'`, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const name = result.Name;
+        const email = result.Email;
+        const loc = result.Location;
+        const lin = result.LinkedIn;
+        const web = result.Website;
+        const ptc = result.Pitch;
+        res.render('updatestartup', {
+            name: name,
+            email: email,
+            loc:loc,
+            lin: lin,
+            web: web,
+            ptc:ptc
+        })
+    })
 })
 
+startup_router.post('/updateprofile/startup',(req,res)=>{
+    const user_email = req.session.user.email;
+    db_sql.query(`select ID from startup where Email='${user_email}';`,(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.ID;
+        const {name,email,industry,stage,funding,location,pitch,linkedin,website,teamsize}=req.body;
+        const query= `update startup set Name='${name}',Email='${email}',Industry='${industry}',Stage='${stage}',Amount='${funding}',Location='${location}',Pitch='${pitch}',LinkedIn='${linkedin}',Website='${website}',TeamSize='${teamsize}' where ID=${id};`
+        db_sql.query(query,(err,result)=>{
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log("Update Successful");
+                res.redirect('/');
+            }
+        })
+    })
+})
 
 
 module.exports = startup_router;
