@@ -458,7 +458,7 @@ investor_router.get('/investor/follow', (req, res) => {
                 console.log(id);
                 investor_schema.updateOne({ i_id: user_id }, { $push: { i_following: id } })
                 .then((result)=>{
-                    console.log("Done 1");
+                    // console.log("Done 1");
                     console.log(result);
                 })
                 .catch((err)=>{
@@ -466,7 +466,7 @@ investor_router.get('/investor/follow', (req, res) => {
                 })
                 investor_schema.updateOne({ i_id: id }, { $push: { i_followers: user_id } })
                 .then((result)=>{
-                    console.log("Done 2");
+                    // console.log("Done 2");
                     console.log(result);
                 })
                 .catch((err)=>{
@@ -490,7 +490,7 @@ investor_router.get('/investor/follow', (req, res) => {
                 const user_id = result.ID;
                 startup_schema.updateOne({ s_id: user_id }, { $push: { i_following: id } })
                 .then((result)=>{
-                    console.log("Done 1");
+                    // console.log("Done 1");
                     console.log(result);
                 })
                 .catch((err)=>{
@@ -498,7 +498,7 @@ investor_router.get('/investor/follow', (req, res) => {
                 })
                 investor_schema.updateOne({ i_id: id }, { $push: { s_followers: user_id } })
                 .then((result)=>{
-                    console.log("Done 2");
+                    // console.log("Done 2");
                     console.log(result);
                 })
                 .catch((err)=>{
@@ -535,7 +535,21 @@ investor_router.get('/startup/follow', (req, res) => {
                 result = Object.values(JSON.parse(JSON.stringify(result)))[0];
                 const user_id = result.ID;
                 investor_schema.updateOne({ i_id: user_id }, { $push: { s_following: id } })
+                .then((result)=>{
+                    // console.log("Done");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
                 startup_schema.updateOne({ s_id: id }, { $push: { i_followers: user_id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
                 res.redirect(`/getprofile/startup?ID=${id}`);
 
 
@@ -553,7 +567,164 @@ investor_router.get('/startup/follow', (req, res) => {
                 result = Object.values(JSON.parse(JSON.stringify(result)))[0];
                 const user_id = result.ID;
                 startup_schema.updateOne({ s_id: user_id }, { $push: { s_following: id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
                 startup_schema.updateOne({ s_id: id }, { $push: { s_followers: user_id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                res.redirect(`/getprofile/startup?ID=${id}`);
+
+            })
+        }
+    })
+})
+
+investor_router.get('/investor/unfollow',(req,res)=>{
+    const type = req.session.user.type;
+    const mail_profile = req.query.mail;
+    const mail_user = req.session.user.email;
+
+    const query = "select ID from investor where Email='" + mail_profile + "';"
+    db_sql.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.ID;
+        if (type === 1) {
+            // investor follows investor
+            // append investor ID in i_following 
+            // append i_id in i_followers  
+            const query_user = "select ID from investor where Email='" + mail_user + "';"
+            db_sql.query(query_user, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                console.log(user_id);
+                console.log(id);
+                investor_schema.updateOne({ i_id: user_id }, { $pull: { i_following: id } })
+                .then((result)=>{
+                    // console.log("Done 1");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                investor_schema.updateOne({ i_id: id }, { $pull: { i_followers: user_id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                // console.log(r1);
+                // console.log(r2);
+                res.redirect(`/getprofile/investor?ID=${id}`);
+            })
+        }
+        else {
+            // startup follows investor
+            // append investor ID in i_following 
+            // append s_id in s_followers  
+            const query_user = "select ID from startup where Email='" + mail_user + "';"
+            db_sql.query(query_user, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                startup_schema.updateOne({ s_id: user_id }, { $pull: { i_following: id } })
+                .then((result)=>{
+                    // console.log("Done 1");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                investor_schema.updateOne({ i_id: id }, { $pull: { s_followers: user_id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                res.redirect(`/getprofile/investor?ID=${id}`);
+
+            })
+        }
+    })
+})
+
+investor_router.get('/startup/unfollow',(req,res)=>{
+    const type = req.session.user.type;
+    const mail_profile = req.query.mail;
+    const mail_user = req.session.user.email;
+    const query = "select ID from startup where Email='" + mail_profile + "';"
+    db_sql.query(query, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+        const id = result.ID;
+        if (type === 1) {
+            // investor follows startup
+            //  append startup ID in s_following 
+            //  append i_id in i_followers 
+            const query_user = "select ID from investor where Email='" + mail_user + "';"
+            db_sql.query(query_user, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                investor_schema.updateOne({ i_id: user_id }, { $pull: { s_following: id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                startup_schema.updateOne({ s_id: id }, { $pull: { i_followers: user_id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                res.redirect(`/getprofile/startup?ID=${id}`);
+
+
+            })
+        }
+        else {
+            // startup follows startup
+            // append startup ID in s_following 
+            // append s_id in s_followers 
+            const query_user = "select ID from startup where Email='" + mail_user + "';"
+            db_sql.query(query_user, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                startup_schema.updateOne({ s_id: user_id }, { $pull: { s_following: id } })
+                startup_schema.updateOne({ s_id: id }, { $pull: { s_followers: user_id } })
                 res.redirect(`/getprofile/startup?ID=${id}`);
 
             })
