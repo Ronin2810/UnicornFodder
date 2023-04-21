@@ -12,22 +12,30 @@ mongoose.connect(db_mongo)
     console.log(err);
 })
 
-for (let index = 1; index <= 10; index++) {
-    const i_user = new investor_schema({
-        i_id:index,
-        i_followers:[],
-        s_followers:[],
-        i_following:[],
-        s_following:[]
-    })
+// for (let index = 1; index <= 10; index++) {
+//     const i_user = new investor_schema({
+//         i_id:index,
+//         i_followers:[],
+//         s_followers:[],
+//         i_following:[],
+//         s_following:[]
+//     })
     
-    const s_user = new startup_schema({
-        s_id:index,
-        i_followers:[],
-        s_followers:[],
-        i_following:[],
-        s_following:[]
-    })
-    i_user.save()
-    s_user.save()
-}
+//     const s_user = new startup_schema({
+//         s_id:index,
+//         i_followers:[],
+//         s_followers:[],
+//         i_following:[],
+//         s_following:[]
+//     })
+//     i_user.save()
+//     s_user.save()
+// }
+
+
+// investor_schema.findOne({i_id:1,i_following:}).then((result)=>{
+//     console.log(result);
+// })
+// .catch((err)=>{
+//     console.log(err);
+// })

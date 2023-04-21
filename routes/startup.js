@@ -146,12 +146,15 @@ startup_router.get('/profile2',authenticate,(req,res)=>{
 
 startup_router.get('/getprofile/investor', authenticate, (req, res) => {
     const id = req.query.ID;
+    const user_email = req.session.user.email
+    const user_type = req.session.user.type
     const query = "select * from investor where ID=" + id + ";"
     db_sql.query(query, (err, result) => {
         if (err) {
             console.log(err);
         }
         result = Object.values(JSON.parse(JSON.stringify(result)));
+        const id = result[0].ID;
         const name = result[0].Name;
         const email = result[0].Email;
         const it = result[0].Investment_Type;
@@ -169,26 +172,111 @@ startup_router.get('/getprofile/investor', authenticate, (req, res) => {
             acc1 = "No";
         }
         const con = result[0].Disclosure;
-        res.render('profinvestor', {
-            profile: req.session.user.name,
-            name: name,
-            email: email,
-            it: it,
-            ip: ip,
-            sod: sod,
-            mia: mia,
-            pno: pno,
-            lin: lin,
-            acc: acc1,
-            con: con,
-            type: req.session.user.type
-        })
 
+        // if this profile's ID is present in our investor_follows/startup_follows db inside i_following set follow variable as "follow" else set as "unfollow"
+        if (user_type === 1) {
+            // investor has followed investor
+            db_sql.query(`select ID from investor where Email='${user_email}'`, (err, result) => {
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                investor_schema.findOne({ i_id: user_id, i_following: id })
+                    .then((result => {
+                        if (result === null) {
+                            res.render('profinvestor', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                it: it,
+                                ip: ip,
+                                sod: sod,
+                                mia: mia,
+                                pno: pno,
+                                lin: lin,
+                                acc: acc1,
+                                con: con,
+                                type: req.session.user.type,
+                                follow: "follow"
+                            })
+                        }
+                        else {
+                            res.render('profinvestor', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                it: it,
+                                ip: ip,
+                                sod: sod,
+                                mia: mia,
+                                pno: pno,
+                                lin: lin,
+                                acc: acc1,
+                                con: con,
+                                type: req.session.user.type,
+                                follow: "unfollow"
+                            })
+                        }
+                    }))
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            })
+
+        }
+        else {
+            // startup has followed investor
+            db_sql.query(`select ID from startup where Email='${user_email}'`, (err, result) => {
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                startup_schema.findOne({ s_id: user_id, i_following: id })
+                    .then((result => {
+                        if (result === null) {
+                            res.render('profinvestor', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                it: it,
+                                ip: ip,
+                                sod: sod,
+                                mia: mia,
+                                pno: pno,
+                                lin: lin,
+                                acc: acc1,
+                                con: con,
+                                type: req.session.user.type,
+                                follow: "follow"
+                            })
+                        }
+                        else {
+                            res.render('profinvestor', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                it: it,
+                                ip: ip,
+                                sod: sod,
+                                mia: mia,
+                                pno: pno,
+                                lin: lin,
+                                acc: acc1,
+                                con: con,
+                                type: req.session.user.type,
+                                follow: "unfollow"
+                            })
+                        }
+                    }))
+                    .catch((err) => {
+                        console.log(err);
+                    })
+
+            })
+        }
     })
 })
 
 startup_router.get('/getprofile/startup', authenticate, (req, res) => {
     const id = req.query.ID;
+    const user_email = req.session.user.email
+    const user_type = req.session.user.type
     const query = 'select * from startup where ID=' + id + ';'
     db_sql.query(query, (err, result) => {
         if (err) {
@@ -206,20 +294,108 @@ startup_router.get('/getprofile/startup', authenticate, (req, res) => {
         const lin = result[0].LinkedIn;
         const web = result[0].Website;
 
-        res.render('profstartup', {
-            profile: req.session.user.name,
-            name: name,
-            email: email,
-            ip: ip,
-            sod: sod,
-            loc: loc,
-            ptc: ptc,
-            ts: ts,
-            mia: mia,
-            lin: lin,
-            web: web,
-            type: req.session.user.type
-        })
+        // if this profile's ID is present in our investor_follows/startup_follows db inside i_following set follow variable as "follow" else set as "unfollow"
+        if (user_type === 1) {
+
+            // investor has followed startup
+            db_sql.query(`select ID from investor where Email='${user_email}'`, (err, result) => {
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                investor_schema.findOne({ i_id: user_id, s_following: id })
+                    .then((result => {
+                        if (result === null) {
+                            res.render('profstartup', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                ip: ip,
+                                sod: sod,
+                                loc: loc,
+                                ptc: ptc,
+                                ts: ts,
+                                mia: mia,
+                                lin: lin,
+                                web: web,
+                                type: req.session.user.type,
+                                follow: "follow"
+
+                            })
+                        }
+                        else {
+                            res.render('profstartup', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                ip: ip,
+                                sod: sod,
+                                loc: loc,
+                                ptc: ptc,
+                                ts: ts,
+                                mia: mia,
+                                lin: lin,
+                                web: web,
+                                type: req.session.user.type,
+                                follow: "unfollow"
+
+                            })
+                        }
+                    }))
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            })
+        }
+        else {
+            // startup has followed startup
+
+            db_sql.query(`select ID from startup where Email='${user_email}'`, (err, result) => {
+                result = Object.values(JSON.parse(JSON.stringify(result)))[0];
+                const user_id = result.ID;
+                startup_schema.findOne({ s_id: user_id, s_following: id })
+                    .then((result => {
+                        if (result === null) {
+                            res.render('profstartup', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                ip: ip,
+                                sod: sod,
+                                loc: loc,
+                                ptc: ptc,
+                                ts: ts,
+                                mia: mia,
+                                lin: lin,
+                                web: web,
+                                type: req.session.user.type,
+                                follow: "follow"
+
+                            })
+                        }
+                        else {
+                            res.render('profstartup', {
+                                profile: req.session.user.name,
+                                name: name,
+                                email: email,
+                                ip: ip,
+                                sod: sod,
+                                loc: loc,
+                                ptc: ptc,
+                                ts: ts,
+                                mia: mia,
+                                lin: lin,
+                                web: web,
+                                type: req.session.user.type,
+                                follow: "unfollow"
+
+                            })
+                        }
+                    }))
+                    .catch((err) => {
+                        console.log(err);
+                    })
+            })
+
+        }
     })
 })
 
@@ -249,6 +425,8 @@ startup_router.get('/investor/follow',(req,res)=>{
                 const user_id = result.ID;
                 investor_schema.updateOne({i_id:user_id},{$push:{i_following:id}})
                 investor_schema.updateOne({i_id:id},{$push:{i_followers:user_id}})
+                res.redirect(`/getprofile/investor?ID=${id}`);
+
             })
         }
         else{
@@ -264,6 +442,8 @@ startup_router.get('/investor/follow',(req,res)=>{
                 const user_id = result.ID;
                 startup_schema.updateOne({s_id:user_id},{$push:{i_following:id}})
                 investor_schema.updateOne({i_id:id},{$push:{s_followers:user_id}})
+                res.redirect(`/getprofile/startup?ID=${id}`);
+
             })
         }
     })
