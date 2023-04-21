@@ -693,7 +693,21 @@ instartupouter.get('/startup/unfollow',(req,res)=>{
                 result = Object.values(JSON.parse(JSON.stringify(result)))[0];
                 const user_id = result.ID;
                 startup_schema.updateOne({ s_id: user_id }, { $pull: { s_following: id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
                 startup_schema.updateOne({ s_id: id }, { $pull: { s_followers: user_id } })
+                .then((result)=>{
+                    // console.log("Done 2");
+                    console.log(result);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
                 res.redirect(`/getprofile/startup?ID=${id}`);
 
             })
