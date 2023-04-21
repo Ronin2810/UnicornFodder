@@ -16,7 +16,7 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="/css/startupprofile.css" />
-    <script src="/js/follow.js" async defer></script>
+    <!-- <script src="/js/follow.js" async defer></script> -->
     <style>
       .navbar-img {
         margin-left: 50px;
@@ -92,7 +92,7 @@
       </p>
       <hr />
       <!-- <button id="followbtn">Follow</button> -->
-      <a href="/startup/<%=follow%>/:<%=email%>"><input type="button" value="<%=follow%>" id="followbtn"></a>
+      <a href="/startup/<%=follow%>?mail=<%=email%>"><input type="button" value="<%=follow%>" id="followbtn"></a>
       <!-- <a href="/updateprofilestartup">Update Profile</a> -->
     </div>
   </body>

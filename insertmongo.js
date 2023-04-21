@@ -33,9 +33,10 @@ mongoose.connect(db_mongo)
 // }
 
 
-// investor_schema.findOne({i_id:1,i_following:}).then((result)=>{
-//     console.log(result);
-// })
-// .catch((err)=>{
-//     console.log(err);
-// })
+investor_schema.updateOne({i_id:1},{$push:{i_following: 2}}).then((result)=>{
+    console.log("Done");
+    console.log(result);
+})
+.catch((err)=>{
+    console.log(err);
+})
