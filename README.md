@@ -61,7 +61,4 @@ git push origin feature/my-feature
 
 Please ensure that your contributions adhere to the project's coding standards and guidelines.
 
-## License
-
-This project is licensed under the [Aditya License](LICENSE).
 
